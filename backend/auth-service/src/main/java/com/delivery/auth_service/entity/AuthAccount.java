@@ -7,6 +7,13 @@ import java.time.LocalDateTime;
 @Table(name = "auth_account")
 public class AuthAccount {
 
+    public enum Role {
+        USER,
+        ADMIN,
+        SHIPPER,
+        SHOP_OWNER
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,8 +24,9 @@ public class AuthAccount {
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String role;
+    private Role role;
 
     @Column(name = "is_active")
     private Boolean isActive = true;
@@ -29,7 +37,6 @@ public class AuthAccount {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // Auto-set timestamps
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
@@ -42,6 +49,7 @@ public class AuthAccount {
     }
 
     // Getters & Setters
+
     public Long getId() {
         return id;
     }
@@ -62,11 +70,11 @@ public class AuthAccount {
         this.passwordHash = passwordHash;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 

@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.delivery.auth_service.security.JwtAuthenticationFilter.JwtAuthenticationFilter;
 
@@ -20,9 +19,7 @@ public class SecurityConfig {
             throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll() // ← Dòng này cho phép tất cả các API auth, bao gồm
-                                                                     // /refresh
-                        .requestMatchers("/api/test/**").authenticated()
+                        .requestMatchers("/api/auth/**", "/error").permitAll() // ← thêm /error
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

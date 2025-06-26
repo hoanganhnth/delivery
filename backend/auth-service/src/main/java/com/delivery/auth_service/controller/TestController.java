@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/test")
 public class TestController {
 
-    @GetMapping("/user-info")
-    public String getUserInfo() {
-        return "You are accessing protected user info!";
+    @GetMapping("/protected")
+    public String protectedEndpoint() {
+        return "✅ You have accessed a protected endpoint!";
     }
 }
