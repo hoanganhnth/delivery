@@ -1,0 +1,52 @@
+package com.delivery.restaurant_service.controller;
+
+import com.delivery.restaurant_service.dto.request.CreateMenuItemRequest;
+import com.delivery.restaurant_service.dto.request.UpdateMenuItemRequest;
+import com.delivery.restaurant_service.dto.response.MenuItemResponse;
+import com.delivery.restaurant_service.payload.BaseResponse;
+import com.delivery.restaurant_service.service.MenuItemService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/menu-items")
+public class MenuItemController {
+
+    @Autowired
+    private MenuItemService menuItemService;
+
+    @PostMapping
+    public ResponseEntity<BaseResponse<MenuItemResponse>> create(@RequestBody CreateMenuItemRequest request) {
+        MenuItemResponse response = menuItemService.createMenuItem(request);
+        return ResponseEntity.ok(new BaseResponse<>(1, response));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<BaseResponse<MenuItemResponse>> update(
+            @PathVariable Long id,
+            @RequestBody UpdateMenuItemRequest request) {
+        MenuItemResponse response = menuItemService.updateMenuItem(id, request);
+        return ResponseEntity.ok(new BaseResponse<>(1, response));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<BaseResponse<Void>> delete(@PathVariable Long id) {
+        menuItemService.deleteMenuItem(id);
+        return ResponseEntity.ok(new BaseResponse<>(1, null));
+    }
+
+    @GetMapping("/restaurant/{restaurantId}")
+    public ResponseEntity<BaseResponse<List<MenuItemResponse>>> getByRestaurant(@PathVariable Long restaurantId) {
+        List<MenuItemResponse> list = menuItemService.getItemsByRestaurant(restaurantId);
+        return ResponseEntity.ok(new BaseResponse<>(1, list));
+    }
+
+    @GetMapping("/restaurant/{restaurantId}/available")
+    public ResponseEntity<BaseResponse<List<MenuItemResponse>>> getAvailableItems(@PathVariable Long restaurantId) {
+        List<MenuItemResponse> list = menuItemService.getAvailableItems(restaurantId);
+        return ResponseEntity.ok(new BaseResponse<>(1, list));
+    }
+}
