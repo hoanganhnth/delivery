@@ -34,6 +34,9 @@ public class MenuItem {
     @Column(nullable = false, length = 20)
     private Status status = Status.AVAILABLE;
 
+    @Column(name = "image", columnDefinition = "TEXT")
+    private String image;
+
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
@@ -107,5 +110,13 @@ public class MenuItem {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

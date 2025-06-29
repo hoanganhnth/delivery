@@ -8,8 +8,16 @@ public class UpdateRestaurantRequest {
     private String phone;
     private LocalTime openingHour;
     private LocalTime closingHour;
+    private String image;
 
     // Getters and Setters
+
+    public String getImage() {
+        return image;
+    }
+    public void setImage(String image) {
+        this.image = image;
+    }
     public String getName() {
         return name;
     }

@@ -7,6 +7,9 @@ public class CreateMenuItemRequest {
     private String name;
     private String description;
     private BigDecimal price;
+    private String image;
+    private Long creator_id;
+
 
     public Long getRestaurantId() {
         return restaurantId;
@@ -38,5 +41,13 @@ public class CreateMenuItemRequest {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

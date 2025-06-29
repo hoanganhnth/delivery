@@ -35,6 +35,9 @@ public class Restaurant {
 
     @Column(name = "closing_hour")
     private LocalTime closingHour;
+
+    @Column(name = "image", columnDefinition = "TEXT")
+    private String image;
 //    @Transient
 //    private boolean isOpen;
 //
@@ -121,6 +124,14 @@ public class Restaurant {
 
     public void setClosingHour(LocalTime closingHour) {
         this.closingHour = closingHour;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 //    public boolean getIsOpen() {
 //        return isOpen;
