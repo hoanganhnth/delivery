@@ -1,5 +1,6 @@
 package com.delivery.restaurant_service.controller;
 
+import com.delivery.restaurant_service.common.constants.ApiPathConstants;
 import com.delivery.restaurant_service.common.constants.HttpHeaderConstants;
 import com.delivery.restaurant_service.dto.request.CreateRestaurantRequest;
 import com.delivery.restaurant_service.dto.request.UpdateRestaurantRequest;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/restaurants")
+@RequestMapping(ApiPathConstants.RESTAURANTS)
 public class RestaurantController {
 
     @Autowired
