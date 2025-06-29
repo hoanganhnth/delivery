@@ -1,5 +1,6 @@
 package com.delivery.restaurant_service.service.impl;
 
+import com.delivery.restaurant_service.common.constants.RoleConstants;
 import com.delivery.restaurant_service.dto.request.CreateMenuItemRequest;
 import com.delivery.restaurant_service.dto.request.UpdateMenuItemRequest;
 import com.delivery.restaurant_service.dto.response.MenuItemResponse;
@@ -9,6 +10,7 @@ import com.delivery.restaurant_service.mapper.MenuItemMapper;
 import com.delivery.restaurant_service.repository.MenuItemRepository;
 import com.delivery.restaurant_service.service.MenuItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,39 +26,51 @@ public class MenuItemServiceImpl implements MenuItemService {
     private MenuItemMapper menuItemMapper;
 
     @Override
-    public MenuItemResponse createMenuItem(CreateMenuItemRequest request) {
+    public MenuItemResponse createMenuItem(CreateMenuItemRequest request, Long creatorId, String role) {
+        // Check if the creatorId matches the restaurant's creatorId
+        if (role == null || !RoleConstants.ALLOWED_CREATORS.contains(role.toUpperCase())) {
+            throw new AccessDeniedException("Only ADMIN or OWNER can create menu items");
+        }
+        if (creatorId == null) {
+            throw new AccessDeniedException("You must be authenticated to create a menu item");
+        }
+
         MenuItem item = menuItemMapper.toEntity(request);
         MenuItem saved = menuItemRepository.save(item);
         return menuItemMapper.toResponse(saved);
     }
 
     @Override
-    public MenuItemResponse updateMenuItem(Long id, UpdateMenuItemRequest request) {
-        MenuItem item = menuItemRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("MenuItem not found"));
+    public MenuItemResponse updateMenuItem(Long id, UpdateMenuItemRequest request, Long creatorId) {
+        MenuItem item = menuItemRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("MenuItem not found"));
+        checkPermission(item, creatorId);
         menuItemMapper.updateEntityFromDto(request, item);
         MenuItem updated = menuItemRepository.save(item);
         return menuItemMapper.toResponse(updated);
     }
 
     @Override
-    public void deleteMenuItem(Long id) {
-        menuItemRepository.deleteById(id);
+    public void deleteMenuItem(Long id, Long creatorId) {
+        MenuItem item = menuItemRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("MenuItem not found"));
+
+        checkPermission(item, creatorId);
+
+        menuItemRepository.delete(item);
     }
 
     @Override
     public List<MenuItemResponse> getItemsByRestaurant(Long restaurantId) {
-        return menuItemRepository.findByRestaurantId(restaurantId)
-                .stream()
-                .map(menuItemMapper::toResponse)
-                .collect(Collectors.toList());
+        return menuItemRepository.findByRestaurantId(restaurantId).stream().map(menuItemMapper::toResponse).collect(Collectors.toList());
     }
 
     @Override
     public List<MenuItemResponse> getAvailableItems(Long restaurantId) {
-        return menuItemRepository.findByRestaurantIdAndStatus(restaurantId, MenuItem.Status.AVAILABLE)
-                .stream()
-                .map(menuItemMapper::toResponse)
-                .collect(Collectors.toList());
+        return menuItemRepository.findByRestaurantIdAndStatus(restaurantId, MenuItem.Status.AVAILABLE).stream().map(menuItemMapper::toResponse).collect(Collectors.toList());
+    }
+
+    private void checkPermission(MenuItem item, Long creatorId) {
+        if (!item.getRestaurant().getCreatorId().equals(creatorId)) {
+            throw new AccessDeniedException("Creator does not have permission to modify this menu item");
+        }
     }
 }

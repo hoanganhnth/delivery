@@ -10,6 +10,7 @@ public class RestaurantResponse {
     private LocalTime openingHour;
     private LocalTime closingHour;
     private boolean open;
+    private String image;
 
     // Getters and Setters
     public boolean isOpen() {
@@ -55,5 +56,11 @@ public class RestaurantResponse {
     }
     public void setClosingHour(LocalTime closingHour) {
         this.closingHour = closingHour;
+    }
+    public String getImage() {
+        return image;
+    }
+    public void setImage(String image) {
+        this.image = image;
     }
 }

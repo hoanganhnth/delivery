@@ -48,5 +48,4 @@ public class UpdateRestaurantRequest {
     public void setClosingHour(LocalTime closingHour) {
         this.closingHour = closingHour;
     }
-
 }

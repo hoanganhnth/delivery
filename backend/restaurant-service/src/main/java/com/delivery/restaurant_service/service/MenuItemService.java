@@ -8,11 +8,13 @@ import java.util.List;
 
 public interface MenuItemService {
 
-    MenuItemResponse createMenuItem(CreateMenuItemRequest request);
+    MenuItemResponse createMenuItem(CreateMenuItemRequest request,
+                                    Long creatorId,
+                                    String role);
 
-    MenuItemResponse updateMenuItem(Long id, UpdateMenuItemRequest request);
+    MenuItemResponse updateMenuItem(Long id, UpdateMenuItemRequest request, Long creatorId);
 
-    void deleteMenuItem(Long id);
+    void deleteMenuItem(Long id, Long creatorId);
 
     List<MenuItemResponse> getItemsByRestaurant(Long restaurantId);
 

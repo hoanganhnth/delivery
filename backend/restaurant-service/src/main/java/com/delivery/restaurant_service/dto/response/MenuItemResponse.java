@@ -12,6 +12,7 @@ public class MenuItemResponse {
     private String status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private String image;
 
     // Getters and Setters
     public Long getId() {
@@ -63,5 +64,11 @@ public class MenuItemResponse {
     }
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+    public String getImage() {
+        return image;
+    }
+    public void setImage(String image) {
+        this.image = image;
     }
 }

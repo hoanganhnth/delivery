@@ -9,11 +9,15 @@ import java.util.List;
 
 public interface RestaurantService {
 
-    RestaurantResponse createRestaurant(CreateRestaurantRequest restaurant);
+    RestaurantResponse createRestaurant(CreateRestaurantRequest restaurant,
+                                        Long creatorId,
+                                        String role);
 
-    RestaurantResponse updateRestaurant(Long id, UpdateRestaurantRequest restaurant);
+    RestaurantResponse updateRestaurant(Long id,
+                                        UpdateRestaurantRequest restaurant,
+                                        Long creatorId);
 
-    void deleteRestaurant(Long id);
+    void deleteRestaurant(Long id, Long creatorId);
 
     RestaurantResponse getRestaurantById(Long id);
 

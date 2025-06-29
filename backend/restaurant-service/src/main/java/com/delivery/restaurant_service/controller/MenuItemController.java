@@ -1,5 +1,6 @@
 package com.delivery.restaurant_service.controller;
 
+import com.delivery.restaurant_service.common.constants.HttpHeaderConstants;
 import com.delivery.restaurant_service.dto.request.CreateMenuItemRequest;
 import com.delivery.restaurant_service.dto.request.UpdateMenuItemRequest;
 import com.delivery.restaurant_service.dto.response.MenuItemResponse;
@@ -19,22 +20,26 @@ public class MenuItemController {
     private MenuItemService menuItemService;
 
     @PostMapping
-    public ResponseEntity<BaseResponse<MenuItemResponse>> create(@RequestBody CreateMenuItemRequest request) {
-        MenuItemResponse response = menuItemService.createMenuItem(request);
+    public ResponseEntity<BaseResponse<MenuItemResponse>> create(@RequestBody CreateMenuItemRequest request,
+                                                                 @RequestHeader(HttpHeaderConstants.X_USER_ID) Long creatorId,
+                                                                 @RequestHeader(HttpHeaderConstants.X_ROLE) String role) {
+        MenuItemResponse response = menuItemService.createMenuItem(request, creatorId, role);
         return ResponseEntity.ok(new BaseResponse<>(1, response));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<BaseResponse<MenuItemResponse>> update(
             @PathVariable Long id,
-            @RequestBody UpdateMenuItemRequest request) {
-        MenuItemResponse response = menuItemService.updateMenuItem(id, request);
+            @RequestBody UpdateMenuItemRequest request,
+            @RequestHeader(HttpHeaderConstants.X_USER_ID) Long creatorId) {
+        MenuItemResponse response = menuItemService.updateMenuItem(id, request, creatorId);
         return ResponseEntity.ok(new BaseResponse<>(1, response));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<BaseResponse<Void>> delete(@PathVariable Long id) {
-        menuItemService.deleteMenuItem(id);
+    public ResponseEntity<BaseResponse<Void>> delete(@PathVariable Long id,
+                                                     @RequestHeader(HttpHeaderConstants.X_USER_ID) Long creatorId) {
+        menuItemService.deleteMenuItem(id, creatorId);
         return ResponseEntity.ok(new BaseResponse<>(1, null));
     }
 

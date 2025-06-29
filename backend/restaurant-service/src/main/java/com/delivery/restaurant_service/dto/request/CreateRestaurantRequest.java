@@ -9,7 +9,6 @@ public class CreateRestaurantRequest {
     private String phone;
     private LocalTime openingHour;
     private LocalTime closingHour;
-    private Long creatorId;
     private String image;
 
     // Getters và Setters
@@ -55,13 +54,6 @@ public class CreateRestaurantRequest {
         this.closingHour = closingHour;
     }
 
-    public Long getCreatorId() {
-        return creatorId;
-    }
-
-    public void setCreatorId(Long creatorId) {
-        this.creatorId = creatorId;
-    }
 
     public String getImage() {
         return image;
