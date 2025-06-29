@@ -10,7 +10,7 @@ public class UpdateMenuItemRequest {
     private BigDecimal price;
     private MenuItem.Status status; // AVAILABLE, SOLD_OUT, DISCONTINUED
     private String image;
-    private Long restaurantId;
+//    private Long restaurantId;
 
     public String getImage() {
         return image;

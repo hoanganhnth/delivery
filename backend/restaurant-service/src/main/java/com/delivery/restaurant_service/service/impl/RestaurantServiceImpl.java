@@ -37,6 +37,8 @@ public class RestaurantServiceImpl implements RestaurantService {
             throw new AccessDeniedException("You must be authenticated to create a restaurant");
         }
         Restaurant restaurant = restaurantMapper.toEntity(request);
+        restaurant.setCreatorId(creatorId);
+
         Restaurant saved = restaurantRepository.save(restaurant);
         return restaurantMapper.toResponse(saved);
     }

@@ -21,8 +21,8 @@ public class MenuItemController {
 
     @PostMapping
     public ResponseEntity<BaseResponse<MenuItemResponse>> create(@RequestBody CreateMenuItemRequest request,
-                                                                 @RequestHeader(HttpHeaderConstants.X_USER_ID) Long creatorId,
-                                                                 @RequestHeader(HttpHeaderConstants.X_ROLE) String role) {
+                                                                 @RequestHeader(value = HttpHeaderConstants.X_USER_ID, required = false) Long creatorId,
+                                                                 @RequestHeader(value = HttpHeaderConstants.X_ROLE, required = false) String role) {
         MenuItemResponse response = menuItemService.createMenuItem(request, creatorId, role);
         return ResponseEntity.ok(new BaseResponse<>(1, response));
     }
@@ -31,14 +31,14 @@ public class MenuItemController {
     public ResponseEntity<BaseResponse<MenuItemResponse>> update(
             @PathVariable Long id,
             @RequestBody UpdateMenuItemRequest request,
-            @RequestHeader(HttpHeaderConstants.X_USER_ID) Long creatorId) {
+            @RequestHeader(value = HttpHeaderConstants.X_USER_ID,required = false) Long creatorId) {
         MenuItemResponse response = menuItemService.updateMenuItem(id, request, creatorId);
         return ResponseEntity.ok(new BaseResponse<>(1, response));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<BaseResponse<Void>> delete(@PathVariable Long id,
-                                                     @RequestHeader(HttpHeaderConstants.X_USER_ID) Long creatorId) {
+                                                     @RequestHeader(value = HttpHeaderConstants.X_USER_ID,required = false) Long creatorId) {
         menuItemService.deleteMenuItem(id, creatorId);
         return ResponseEntity.ok(new BaseResponse<>(1, null));
     }

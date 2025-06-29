@@ -21,8 +21,8 @@ public class RestaurantController {
 
     @PostMapping
     public ResponseEntity<BaseResponse<RestaurantResponse>> create(@RequestBody CreateRestaurantRequest request,
-                                                                   @RequestHeader(HttpHeaderConstants.X_USER_ID) Long creatorId,
-                                                                   @RequestHeader(HttpHeaderConstants.X_ROLE) String role) {
+                                                                   @RequestHeader(value = HttpHeaderConstants.X_USER_ID, required = false) Long creatorId,
+                                                                   @RequestHeader(value = HttpHeaderConstants.X_ROLE, required = false) String role) {
         RestaurantResponse response = restaurantService.createRestaurant(request, creatorId, role);
 
         return ResponseEntity.ok(new BaseResponse<>(1, response));
@@ -31,14 +31,14 @@ public class RestaurantController {
     @PutMapping("/{id}")
     public ResponseEntity<BaseResponse<RestaurantResponse>> update(@PathVariable Long id,
                                                                    @RequestBody UpdateRestaurantRequest request,
-                                                                   @RequestHeader(HttpHeaderConstants.X_USER_ID) Long creatorId) {
+                                                                   @RequestHeader(value = HttpHeaderConstants.X_USER_ID, required = false) Long creatorId) {
         RestaurantResponse response = restaurantService.updateRestaurant(id, request, creatorId);
         return ResponseEntity.ok(new BaseResponse<>(1, response));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<BaseResponse<Void>> delete(@PathVariable Long id,
-                                                     @RequestHeader(HttpHeaderConstants.X_USER_ID) Long creatorId) {
+                                                     @RequestHeader(value = HttpHeaderConstants.X_USER_ID, required = false) Long creatorId) {
 
         restaurantService.deleteRestaurant(id, creatorId);
         return ResponseEntity.ok(new BaseResponse<>(1, null));
